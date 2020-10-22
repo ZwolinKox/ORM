@@ -1,6 +1,9 @@
 # ORM
 Micro ORM system for PHP 
 
+[![version](https://img.shields.io/badge/version-1.0.0-yellow.svg)](https://semver.org)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
