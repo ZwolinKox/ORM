@@ -22,10 +22,10 @@ $ composer require https://github.com/ZwolinKox/ORM.git
 ```
 
 ## Code Examples
-Example ORM class: 
-`
-<?php 
 
+Example ORM class: 
+
+``` php
 namespace ORM;
 use \Model;
 
@@ -44,4 +44,17 @@ class ORM extends Model {
 
 }
 
-`
+```
+
+Example use ORM
+
+``` php
+$orm = new ORM();
+
+$foo = $orm->getElementById(3));
+
+$bar = $orm->getElement([
+    'name' => 'Adam',
+    'email' => 'kamil@slimak.com'
+]);
+```
