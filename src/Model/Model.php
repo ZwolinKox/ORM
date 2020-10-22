@@ -28,13 +28,11 @@ abstract class Model {
     }
 
     public function truncate() {
-        $where = $this->getWhereSQL($where);
         $stmt = $pdo->prepare('TRUNCATE TABLE '.$this->tableName());
         $stmt->execute($where);
     }
 
     public function drop() {
-        $where = $this->getWhereSQL($where);
         $stmt = $pdo->prepare('DROP TABLE '.$this->tableName());
         $stmt->execute($where);
     }
