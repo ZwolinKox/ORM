@@ -45,7 +45,12 @@ abstract class Model {
 
         foreach ($where as $key => $value) {
 
-            $sql .= $key.' = '.':'.$key;
+            $prefix = '';
+
+            if(!preg_match('/\./'))
+                $prefix = $this->tableName().'.';
+
+            $sql .= $prefix.$key.' = '.':'.$key;
 
             if ($key !== array_key_last($array)) {
                 $sql .= ' AND ';
