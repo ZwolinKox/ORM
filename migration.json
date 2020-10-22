@@ -1,0 +1,10 @@
+{
+    "tables":[
+       {
+          "users":"TABLE_NAME",
+          "id":"INT",
+          "name":"VARCHAR(40)",
+          "email":"VARCHAR(40)"
+       }
+    ]
+ }

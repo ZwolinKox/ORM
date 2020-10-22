@@ -1,0 +1,19 @@
+{
+    "name": "zwolinkox/orm",
+    "autoload": {
+        "psr-4": {
+            "ORM\\": "src/"
+        }
+    },
+    "description": "Micro php ORM system",
+    "type": "library",
+    "license": "GNU General Public License v3.0",
+    "authors": [
+        {
+            "name": "Szymon Zwoliński",
+            "email": "zwolinn@wp.pl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

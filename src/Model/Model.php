@@ -1,0 +1,36 @@
+<?php
+
+namespace ORM\Model;
+
+abstract class Model {
+
+    protected $options;
+
+    public function __construct() {
+        $options = json_encode(file_get_contents('./settings.json', true))['orm'] ;
+    }
+
+    protected function makePDO() {
+        $host = '127.0.0.1';
+        $db   = 'test';
+        $user = 'root';
+        $pass = '';
+        $charset = 'utf8mb4';
+
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        try {
+            $pdo = new PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    protected function tableName() {
+        return strtolower(get_class($this)).'s';
+    }
+}
