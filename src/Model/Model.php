@@ -20,11 +20,36 @@ abstract class Model {
         return $stmt->fetch();
     }
 
-    protected function getRelationSQL(){
+    public function getElement($where = []) {
+        $where = $this0>getWhereSQL($where);
+        $stmt = $pdo->prepare('SELECT * FROM '.$this->tableName.$this->getRelationSQL().$this->getWhereSQL());
+        $stmt->execute($where);
+        return $stmt->fetch();
+    }
+
+    protected function getWhereSQL(array $where) : string {
+        if(empty($where))
+            return '';
+
+        $sql = ' WHERE ';
+
+        foreach ($where as $key => $value) {
+
+            $sql .= $key.' = '.':'.$key;
+
+            if ($key !== array_key_last($array)) {
+                $sql .= ' AND ';
+            }
+        }
+
+        return $sql;
+    }
+
+    protected function getRelationSQL() : string {
         $sql = '';
         
         foreach ($relations as $value) {
-            $sql += ' '.$value->relationType.' '.$value->tableName.' ON '.$this->tableName().'.'.$value->leftSideField.'='.$value->tableName.'.'.$value->rightSideField;
+            $sql .= ' '.$value->relationType.' '.$value->tableName.' ON '.$this->tableName().'.'.$value->leftSideField.'='.$value->tableName.'.'.$value->rightSideField;
         }
 
         return $sql;
@@ -42,7 +67,7 @@ abstract class Model {
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_EMULATE_PREPARES   => false
         ];
 
         try {
@@ -52,7 +77,7 @@ abstract class Model {
         }
     }
 
-    protected function tableName() {
+    protected function tableName() : string {
         return strtolower(get_class($this)).'s';
     }
 }
