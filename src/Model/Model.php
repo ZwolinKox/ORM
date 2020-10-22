@@ -21,10 +21,22 @@ abstract class Model {
     }
 
     public function getElement($where = []) {
-        $where = $this0>getWhereSQL($where);
+        $where = $this->getWhereSQL($where);
         $stmt = $pdo->prepare('SELECT * FROM '.$this->tableName.$this->getRelationSQL().$this->getWhereSQL());
         $stmt->execute($where);
         return $stmt->fetch();
+    }
+
+    public function truncate() {
+        $where = $this->getWhereSQL($where);
+        $stmt = $pdo->prepare('TRUNCATE TABLE '.$this->tableName());
+        $stmt->execute($where);
+    }
+
+    public function drop() {
+        $where = $this->getWhereSQL($where);
+        $stmt = $pdo->prepare('DROP TABLE '.$this->tableName());
+        $stmt->execute($where);
     }
 
     protected function getWhereSQL(array $where) : string {
