@@ -9,7 +9,10 @@ abstract class Model {
 
     public $relations = [];
 
+    public abstract function setRelation();
+
     public function __construct() {
+        $this->setRelation();
         $options = json_encode(file_get_contents('./settings.json', true))['orm'];
         $this->makePDO();
     }
