@@ -3,6 +3,9 @@
 namespace ORM;
 use \Model;
 
+//Class cannot override base constructor
+//If you want this you must use parent constructor in constructor of this class
+
 class ORM extends Model {
 
     //Abstract method for initialize 

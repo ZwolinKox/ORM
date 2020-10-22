@@ -17,7 +17,7 @@ abstract class Model {
         $this->makePDO();
     }
 
-    public function getElementById($id) {
+    public function getElementById(int $id) {
         $stmt = $pdo->prepare('SELECT * FROM '.$this->tableName.$this->getRelationSQL().' WHERE id = :id');
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
