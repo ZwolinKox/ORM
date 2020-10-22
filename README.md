@@ -5,6 +5,8 @@ Micro ORM system for PHP
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#instalation)
+* [Code Examples](#code-examples)
+
 
 # General Info
 Project was started as teaching resource for Library system
@@ -15,4 +17,31 @@ Project is created with:
 
 ## Instalation
 ##### Setup via Composer
+```
 $ composer require https://github.com/ZwolinKox/ORM.git
+```
+
+## Code Examples
+Example ORM class: 
+`
+<?php 
+
+namespace ORM;
+use \Model;
+
+//Class cannot override base constructor
+//If you want this you must use parent constructor in constructor of this class
+
+class ORM extends Model {
+
+    //Abstract method for initialize 
+    public function setRelation() {
+        $this->relations = [
+            new RelationKey('users', 'user_id', 'id'),
+            new RelationKey('orders', 'order_id', 'id')
+        ];
+    }
+
+}
+
+`
