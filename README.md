@@ -1,8 +1,12 @@
 # ORM
-Micro ORM system for PHP 
 
 [![version](https://img.shields.io/badge/version-1.0.0-yellow.svg)](https://semver.org)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+Micro ORM system for PHP 
+
+
 
 ## Table of contents
 * [General info](#general-info)
