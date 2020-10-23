@@ -9,12 +9,16 @@ abstract class Model {
     protected $options = [];
     protected $pdo;
 
+    const SOFT_DELETE = 0;
+    const HARD_DELETE = 1;
+
+    protected $deleteType = Model::HARD_DELETE;
     public $relations = [];
 
-    public abstract function setRelation();
+    public abstract function init();
 
     public function __construct() {
-        $this->setRelation();
+        $this->init();
         
         $jsonIterator = new \RecursiveIteratorIterator(
             new \RecursiveArrayIterator(json_decode(file_get_contents('./settings.json'), true)),
@@ -41,12 +45,12 @@ abstract class Model {
 
     public function truncate() {
         $stmt = $this->pdo->prepare('TRUNCATE TABLE '.$this->tableName());
-        $stmt->execute($where);
+        $stmt->execute();
     }
 
     public function drop() {
         $stmt = $this->pdo->prepare('DROP TABLE '.$this->tableName());
-        $stmt->execute($where);
+        $stmt->execute();
     }
 
     protected function getWhereSQL(array $where) : string {

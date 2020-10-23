@@ -7,6 +7,6 @@ namespace ORM;
 
 class User extends Model\Model {
 
-    public function setRelation() {}
+    public function init() {}
 
 }

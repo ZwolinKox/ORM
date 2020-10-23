@@ -9,11 +9,15 @@ use \Model;
 class ORM extends Model {
 
     //Abstract method for initialize 
-    public function setRelation() {
+    public function init() {
         $this->relations = [
             new RelationKey('users', 'user_id', 'id'),
             new RelationKey('orders', 'order_id', 'id')
         ];
+
+        $this->deleteType = Model::SOFT_DELETE;
     }
+
+
 
 }
