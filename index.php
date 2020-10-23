@@ -2,11 +2,11 @@
 
 namespace ORM;
 
-$orm = new ORM();
+require_once('./vendor/autoload.php');
 
-print_r($orm->getElementById(3));
+$user = new User();
 
-print_r($orm->getElement([
-    'name' => 'Adam',
-    'email' => 'kamil@slimak.com'
-]));
+$userelements = $user->getElement(['id' => '4', 'login' => 'xddd']);
+
+if(is_object($userelements))
+    echo $userelements->login;

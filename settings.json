@@ -1,9 +1,9 @@
 {
     "orm": {
-      "host": "127.0.0",
-      "db": "test",
+      "host": "localhost",
+      "db": "orm",
       "user": "root",
-      "password": "127.0.0",
-      "charset": "127.0.0"
+      "password": "",
+      "charset": "utf8mb4"
     }
   }

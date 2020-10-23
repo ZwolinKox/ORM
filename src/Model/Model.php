@@ -2,9 +2,11 @@
 
 namespace ORM\Model;
 
+use \RecursiveIteratorIterator;
+
 abstract class Model {
 
-    protected $options;
+    protected $options = [];
     protected $pdo;
 
     public $relations = [];
@@ -13,30 +15,37 @@ abstract class Model {
 
     public function __construct() {
         $this->setRelation();
-        $options = json_encode(file_get_contents('./settings.json', true))['orm'];
+        
+        $jsonIterator = new \RecursiveIteratorIterator(
+            new \RecursiveArrayIterator(json_decode(file_get_contents('./settings.json'), true)),
+            \RecursiveIteratorIterator::SELF_FIRST);
+        
+        foreach ($jsonIterator as $key => $value) {
+            array_push($this->options, [$key => $value]);
+        }
+
         $this->makePDO();
     }
 
     public function getElementById(int $id) {
-        $stmt = $pdo->prepare('SELECT * FROM '.$this->tableName.$this->getRelationSQL().' WHERE id = :id');
+        $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().' WHERE id = :id');
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }
 
     public function getElement($where = []) {
-        $where = $this->getWhereSQL($where);
-        $stmt = $pdo->prepare('SELECT * FROM '.$this->tableName.$this->getRelationSQL().$this->getWhereSQL());
+        $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
         return $stmt->fetch();
     }
 
     public function truncate() {
-        $stmt = $pdo->prepare('TRUNCATE TABLE '.$this->tableName());
+        $stmt = $this->pdo->prepare('TRUNCATE TABLE '.$this->tableName());
         $stmt->execute($where);
     }
 
     public function drop() {
-        $stmt = $pdo->prepare('DROP TABLE '.$this->tableName());
+        $stmt = $this->pdo->prepare('DROP TABLE '.$this->tableName());
         $stmt->execute($where);
     }
 
@@ -50,12 +59,12 @@ abstract class Model {
 
             $prefix = '';
 
-            if(!preg_match('/\./'))
+            if(!preg_match('/\./', $key))
                 $prefix = $this->tableName().'.';
 
             $sql .= $prefix.$key.' = '.':'.$key;
 
-            if ($key !== array_key_last($array)) {
+            if ($key !== array_key_last($where)) {
                 $sql .= ' AND ';
             }
         }
@@ -66,7 +75,7 @@ abstract class Model {
     protected function getRelationSQL() : string {
         $sql = '';
         
-        foreach ($relations as $value) {
+        foreach ($this->relations as $value) {
             $sql .= ' '.$value->relationType.' '.$value->tableName.' ON '.$this->tableName().'.'.$value->leftSideField.'='.$value->tableName.'.'.$value->rightSideField;
         }
 
@@ -74,28 +83,30 @@ abstract class Model {
     }
 
     protected function makePDO() {
-        $host = $options['host'];
-        $db   =  $options['db'];
-        $user =  $options['user'];
-        $pass =  $options['pass'];
-        $charset =  $options['charset'];
+
+        $host = $this->options[0]['orm']['host'];
+        $db   =  $this->options[0]['orm']['db'];
+        $user =  $this->options[0]['orm']['user'];
+        $pass =  $this->options[0]['orm']['password'];
+        $charset =  $this->options[0]['orm']['charset'];
 
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
         $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false
+            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
+            \PDO::ATTR_EMULATE_PREPARES   => false
         ];
 
         try {
-            $this->pdo = new PDO($dsn, $user, $pass, $options);
+            $this->pdo = new \PDO($dsn, $user, $pass, $options);
         } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }
 
     protected function tableName() : string {
-        return strtolower(get_class($this)).'s';
+        $tableName = explode('\\', strtolower(get_class($this)));
+        return end($tableName).'s';
     }
 }
