@@ -18,6 +18,4 @@ class ORM extends Model {
         $this->deleteType = Model::SOFT_DELETE;
     }
 
-
-
 }

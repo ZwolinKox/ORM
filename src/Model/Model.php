@@ -37,7 +37,7 @@ abstract class Model {
         return $stmt->fetch();
     }
 
-    public function getElement($where = []) {
+    public function getElement(array $where = []) {
         $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
         return $stmt->fetch();
@@ -51,6 +51,18 @@ abstract class Model {
     public function drop() {
         $stmt = $this->pdo->prepare('DROP TABLE '.$this->tableName());
         $stmt->execute();
+    }
+
+    public function delete(array $where) {
+        
+        if($this->deleteType === Model::HARD_DELETE)
+            $stmt = $this->pdo->prepare('DELETE FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+        elseif ($this->deleteType === Model::SOFT_DELETE) {
+            $stmt = $this->pdo->prepare('UPDATE '.$this->tableName().' SET '.$this->tableName().'.is_delete=1 '.$this->getRelationSQL().$this->getWhereSQL($where));
+        }
+        
+        $stmt->execute($where);
+        return $stmt->fetch();
     }
 
     protected function getWhereSQL(array $where) : string {
