@@ -1,6 +1,7 @@
 <?php 
 
 namespace ORM;
+
 use ORM\Model\Model;
 
 //Class cannot override base constructor

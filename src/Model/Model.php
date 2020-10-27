@@ -37,14 +37,14 @@ abstract class Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getElements(array $where = []) {
-        $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+    public function getElements(array $where = [], array $cols = ['*']) {
+        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL().' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
         return $stmt->fetchAll();
     }
 
-    public function getElement(array $where = []) {
-        $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+    public function getElement(array $where = [], array $cols = ['*']) {
+        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL().' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
         return $stmt->fetch();
     }
@@ -79,6 +79,24 @@ abstract class Model {
     public function insert(array $values) {
         $stmt = $this->pdo->prepare('INSERT INTO '.$this->tableName().' '.$this->getInsertSQL($values));
         $stmt->execute($values);
+    }
+
+    protected function getSelectSQL(array $cols) {
+        $sql = '';
+
+        foreach ($where as $key => $value) {
+
+            $prefix = '';
+
+            if(!preg_match('/\./', $key))
+                $prefix = $this->tableName().'.';
+
+            $sql .= $prefix.$key.', ';
+        }
+
+        $sql = substr($sql, 0, strlen($sql)-2);
+
+        return $sql;
     }
 
     protected function getInsertSQL(array $values) {
