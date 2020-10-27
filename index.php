@@ -11,4 +11,4 @@ $userelements = $user->getElement(['id' => '4']);
 if(is_object($userelements))
     echo $userelements->name;
 
-$user->delete(['id' => '4']);
+$user->update(['id' => '4'], ['name' => 'Jacob Hear']);

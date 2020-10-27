@@ -53,6 +53,12 @@ abstract class Model {
         $stmt->execute();
     }
 
+    public function update(array $where, array $change) {
+        echo 'UPDATE '.$this->tableName().' SET '.$this->getUpdateSQL($change).$this->getRelationSQL().$this->getWhereSQL($where);
+        $stmt = $this->pdo->prepare('UPDATE '.$this->tableName().' SET '.$this->getUpdateSQL($change).$this->getRelationSQL().$this->getWhereSQL($where));
+        $stmt->execute($where);
+    }
+
     public function delete(array $where) {
         
         if($this->deleteType === Model::HARD_DELETE)
@@ -63,6 +69,16 @@ abstract class Model {
         
         $stmt->execute($where);
         return $stmt->fetch();
+    }
+
+    protected function getUpdateSQL(array $change) {
+        $sql = '';
+
+        foreach ($change as $key => $value) {
+            $sql .= $this->tableName().'.'.$key.' = "'.$value.'" ';
+        }
+
+        return $sql;
     }
 
     protected function getWhereSQL(array $where) : string {
