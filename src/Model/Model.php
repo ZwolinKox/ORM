@@ -38,13 +38,13 @@ abstract class Model {
     }
 
     public function getElements(array $where = [], array $cols = ['*']) {
-        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL().' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
         return $stmt->fetchAll();
     }
 
     public function getElement(array $where = [], array $cols = ['*']) {
-        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL().' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
         return $stmt->fetch();
     }
@@ -84,14 +84,14 @@ abstract class Model {
     protected function getSelectSQL(array $cols) {
         $sql = '';
 
-        foreach ($where as $key => $value) {
+        foreach ($cols as $key => $value) {
 
             $prefix = '';
 
-            if(!preg_match('/\./', $key))
+            if(!preg_match('/\./', $value))
                 $prefix = $this->tableName().'.';
 
-            $sql .= $prefix.$key.', ';
+            $sql .= $prefix.$value.', ';
         }
 
         $sql = substr($sql, 0, strlen($sql)-2);

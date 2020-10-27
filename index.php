@@ -6,4 +6,4 @@ require_once('./vendor/autoload.php');
 
 $user = new User();
 
-print_r($user->getElement(['name' => 'Szpadel']));
+print_r($user->getElement(['name' => 'Szpadel'], ['name', 'is_delete']));
