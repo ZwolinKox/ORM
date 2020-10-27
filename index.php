@@ -6,9 +6,6 @@ require_once('./vendor/autoload.php');
 
 $user = new User();
 
-$userelements = $user->getElement(['id' => '4']);
+$user->update(['name' => 'Jacob Hear'], ['name' => 'Jakub Slysz']);
 
-if(is_object($userelements))
-    echo $userelements->name;
-
-$user->update(['id' => '4'], ['name' => 'Jacob Hear']);
+echo $user->getElementById(2)->name;

@@ -54,7 +54,6 @@ abstract class Model {
     }
 
     public function update(array $where, array $change) {
-        echo 'UPDATE '.$this->tableName().' SET '.$this->getUpdateSQL($change).$this->getRelationSQL().$this->getWhereSQL($where);
         $stmt = $this->pdo->prepare('UPDATE '.$this->tableName().' SET '.$this->getUpdateSQL($change).$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt->execute($where);
     }
@@ -69,6 +68,25 @@ abstract class Model {
         
         $stmt->execute($where);
         return $stmt->fetch();
+    }
+
+    public function insert(array $values) {
+        $stmt = $this->pdo->prepare('INSERT INTO '.$this->tableName().' '.$this->getInsertSQL($values));
+        $stmt->execute($where);
+    }
+
+    protected function getInsertSQL(array $values) {
+        $columns = '';
+        $values = '(';
+
+        foreach ($variable as $key => $value) {
+            $columns .= $key.', ';
+            $values .= $value.', ';
+        }
+
+        $values .= ')';
+
+        return $columns.' VALUES '.$values;
     }
 
     protected function getUpdateSQL(array $change) {
