@@ -34,7 +34,13 @@ abstract class Model {
     public function getElementById(int $id) {
         $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().' WHERE id = :id');
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getElements(array $where = []) {
+        $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+        $stmt->execute($where);
+        return $stmt->fetchAll();
     }
 
     public function getElement(array $where = []) {
@@ -72,21 +78,26 @@ abstract class Model {
 
     public function insert(array $values) {
         $stmt = $this->pdo->prepare('INSERT INTO '.$this->tableName().' '.$this->getInsertSQL($values));
-        $stmt->execute($where);
+        $stmt->execute($values);
     }
 
     protected function getInsertSQL(array $values) {
-        $columns = '';
-        $values = '(';
+        $columns = '(';
+        $vals = '(';
 
-        foreach ($variable as $key => $value) {
+        foreach ($values as $key => $value) {
             $columns .= $key.', ';
-            $values .= $value.', ';
+            $vals .= ':'.$key.', ';
         }
 
-        $values .= ')';
+        $columns = substr($columns, 0, strlen($columns)-2);
+        $vals = substr($vals, 0, strlen($vals)-2);
 
-        return $columns.' VALUES '.$values;
+        $columns .= ')';
+        $vals .= ')';
+
+
+        return $columns.' VALUES '.$vals;
     }
 
     protected function getUpdateSQL(array $change) {
