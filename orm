@@ -1,0 +1,10 @@
+<?php
+
+namespace ORM;
+
+require_once 'vendor/autoload.php';
+
+$migration = new Migrations\Migrations();
+$migration->migrate();
+
+die('Mirate successful');

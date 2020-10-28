@@ -1,10 +1,25 @@
 {
     "tables":[
        {
-          "users":"TABLE_NAME",
-          "id":"INT",
+          "mages":"TABLE_NAME",
+          "id":"INT NOT NULL AUTO_INCREMENT",
           "name":"VARCHAR(40)",
-          "email":"VARCHAR(40)"
-       }
+          "email":"VARCHAR(40)",
+          "PRIMARY KEY": "(id)"
+       },
+       {
+         "horses":"TABLE_NAME",
+         "id":"INT NOT NULL AUTO_INCREMENT",
+         "name":"VARCHAR(40)",
+         "email":"VARCHAR(40)",
+         "PRIMARY KEY": "(id)"
+      },
+      {
+         "xd":"TABLE_NAME",
+         "id":"INT NOT NULL AUTO_INCREMENT",
+         "name":"VARCHAR(40)",
+         "email":"VARCHAR(40)",
+         "PRIMARY KEY": "(id)"
+      }
     ]
  }
