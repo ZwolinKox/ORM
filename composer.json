@@ -8,6 +8,7 @@
     "description": "Micro php ORM system",
     "type": "library",
     "license": "GNU General Public License v3.0",
+    "version": "v1.0.0",
     "authors": [
         {
             "name": "Szymon Zwoliński",
