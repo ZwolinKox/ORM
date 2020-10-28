@@ -12,6 +12,7 @@ Micro ORM system for PHP
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#instalation)
+* [Dependency Injection](#dependency-injection)
 * [Code Examples](#code-examples)
 
 
@@ -26,6 +27,52 @@ Project is created with:
 ##### Setup via Composer
 ```
 $ composer require https://github.com/ZwolinKox/ORM.git
+```
+
+## Depencency Injection
+
+#### Database settings | settings.json
+
+``` json
+{
+    "orm": {
+      "host": "localhost",
+      "db": "orm",
+      "user": "root",
+      "password": "",
+      "charset": "utf8mb4"
+    }
+ }
+```
+
+#### Migrations | migration.json
+
+``` json
+{
+    "tables":[
+       {
+          "mages":"TABLE_NAME",
+          "id":"INT NOT NULL AUTO_INCREMENT",
+          "name":"VARCHAR(40)",
+          "email":"VARCHAR(40)",
+          "PRIMARY KEY": "(id)"
+       },
+       {
+         "warriors":"TABLE_NAME",
+         "id":"INT NOT NULL AUTO_INCREMENT",
+         "name":"VARCHAR(40)",
+         "email":"VARCHAR(40)",
+         "PRIMARY KEY": "(id)"
+      },
+      {
+         "mystics":"TABLE_NAME",
+         "id":"INT NOT NULL AUTO_INCREMENT",
+         "name":"VARCHAR(40)",
+         "email":"VARCHAR(40)",
+         "PRIMARY KEY": "(id)"
+      }
+    ]
+ }
 ```
 
 ## Code Examples
