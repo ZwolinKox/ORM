@@ -29,7 +29,7 @@ Project is created with:
 $ composer require https://github.com/ZwolinKox/ORM.git
 ```
 
-## Depencency Injection
+## Dependency Injection
 
 #### Database settings | settings.json
 
