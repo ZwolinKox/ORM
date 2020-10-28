@@ -30,7 +30,7 @@ $ composer require https://github.com/ZwolinKox/ORM.git
 
 ## Code Examples
 
-Example ORM class: 
+#### Example ORM class: 
 
 ``` php
 namespace ORM;
