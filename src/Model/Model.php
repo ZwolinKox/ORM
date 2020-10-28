@@ -34,12 +34,17 @@ abstract class Model {
     public function getElementById(int $id) {
         $stmt = $this->pdo->prepare('SELECT * FROM '.$this->tableName().$this->getRelationSQL().' WHERE id = :id');
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch();
     }
 
     public function getElements(array $where = [], array $cols = ['*']) {
-        $stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
-        $stmt->execute($where);
+        echo 'SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where, false);
+        //$stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+        //$stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
+        $stmt = $this->pdo->query('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where, false));
+
+        
+        //$stmt->execute($where);
         return $stmt->fetchAll();
     }
 
@@ -128,24 +133,39 @@ abstract class Model {
         return $sql;
     }
 
-    protected function getWhereSQL(array $where) : string {
+    protected function getWhereSQL(array &$where, $withBinding = true) : string {
         if(empty($where))
             return '';
 
         $sql = ' WHERE ';
 
+
         foreach ($where as $key => $value) {
 
             $prefix = '';
+            $key2 = $key;
 
-            if(!preg_match('/\./', $key))
-                $prefix = $this->tableName().'.';
+            if($withBinding) {
+                if(!preg_match('/\./', $key)) 
+                    $prefix = $this->tableName().'.';
 
-            $sql .= $prefix.$key.' = '.':'.$key;
+                if(!preg_match('/\./', $key))
+                    $sql .= $prefix.$key.' = '.':'.$key.'';
 
-            if ($key !== array_key_last($where)) {
-                $sql .= ' AND ';
+                if ($key !== array_key_last($where)) {
+                    $sql .= ' AND ';
+                }
+            } else {
+                if(!preg_match('/\./', $key)) 
+                    $prefix = $this->tableName().'.';
+
+                    $sql .= $prefix.$key.' = '.'"'.$value.'"';
+
+                if ($key !== array_key_last($where)) {
+                    $sql .= ' AND ';
+                }
             }
+            
         }
 
         return $sql;

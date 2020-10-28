@@ -13,6 +13,6 @@ class RelationKey {
         $this->tableName = $tableName;
         $this->leftSideField = $leftSideField;
         $this->rightSideField = $rightSideField;
-        $this->$relationType = $relationType;
+        $this->relationType = $relationType;
     }
 }

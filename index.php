@@ -5,5 +5,6 @@ namespace ORM;
 require_once('./vendor/autoload.php');
 
 $user = new User();
+$order = new Order();
 
-print_r($user->getElement(['name' => 'Szpadel'], ['name', 'is_delete']));
+print_r($order->getElements(['orders.id' => '2']));
