@@ -53,7 +53,7 @@ class ORM extends Model {
 
 ```
 
-Get element(s)
+#### Get element(s)
 
 ``` php
 $orm = new ORM();
@@ -70,7 +70,7 @@ print_r($bar); //Array
 
 ```
 
-Update Table
+#### Update Table
 
 
 ``` php
@@ -82,7 +82,7 @@ $orm->update(
 );
 ```
 
-Drop and Truncate Table
+#### Drop and Truncate Table
 
 
 ``` php
@@ -95,7 +95,7 @@ $orm->drop();
 ```
 
 
-Delete from table
+#### Delete from table
 
 
 ``` php
@@ -106,7 +106,7 @@ $orm->delete(['id' => 5]);
 
 ```
 
-Insert Into
+#### Insert Into
 
 
 ``` php
