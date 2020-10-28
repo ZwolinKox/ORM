@@ -38,13 +38,7 @@ abstract class Model {
     }
 
     public function getElements(array $where = [], array $cols = ['*']) {
-        echo 'SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where, false);
-        //$stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
-        //$stmt = $this->pdo->prepare('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where));
         $stmt = $this->pdo->query('SELECT '.$this->getSelectSQL($cols).' FROM '.$this->tableName().$this->getRelationSQL().$this->getWhereSQL($where, false));
-
-        
-        //$stmt->execute($where);
         return $stmt->fetchAll();
     }
 
