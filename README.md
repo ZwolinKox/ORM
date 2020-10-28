@@ -53,15 +53,65 @@ class ORM extends Model {
 
 ```
 
-Example use ORM
+Get element(s)
 
 ``` php
 $orm = new ORM();
 
-$foo = $orm->getElementById(3));
+$foo = $orm->getElementById(3);
 
-$bar = $orm->getElement([
+$biz = $orm->getElement(['id' => 20, 'is_delete' => 0]);
+
+$bar = $orm->getElements([
     'name' => 'Adam',
-    'email' => 'kamil@slimak.com'
 ]);
+
+print_r($bar); //Array
+
+```
+
+Update Table
+
+
+``` php
+$orm = new ORM();
+
+$orm->update(
+    ['id' => 1],
+    ['name' => 'Adam', 'email' => 'kamil@slimak.com']
+);
+```
+
+Drop and Truncate Table
+
+
+``` php
+$orm = new ORM();
+
+$orm->truncate();
+$orm->drop();
+
+
+```
+
+
+Delete from table
+
+
+``` php
+$orm = new ORM();
+
+$orm->delete(['id' => 5]);
+
+
+```
+
+Insert Into
+
+
+``` php
+$orm = new ORM();
+
+$orm->insert(['name' => 'John', 'age' => '13']);
+
 ```
